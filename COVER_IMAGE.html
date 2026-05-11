@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1280px; height: 720px; overflow: hidden;
+    background: #0a0f1e;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: white;
+  }
+  .bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .glow {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    top: -200px; left: -100px;
+  }
+  .glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 70%);
+    bottom: -100px; right: 200px;
+  }
+  .content {
+    position: relative; z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 70px;
+  }
+  .top-badge {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 40px;
+  }
+  .badge {
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.4);
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: #60a5fa;
+    font-weight: 500;
+  }
+  .badge.green {
+    background: rgba(16,185,129,0.15);
+    border-color: rgba(16,185,129,0.4);
+    color: #34d399;
+  }
+  .main {
+    flex: 1;
+    display: flex;
+    gap: 60px;
+    align-items: center;
+  }
+  .left { flex: 1; }
+  .hindi-title {
+    font-size: 22px;
+    color: #94a3b8;
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+  .title {
+    font-size: 82px;
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #ffffff 0%, #93c5fd 60%, #34d399 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+  }
+  .subtitle {
+    font-size: 18px;
+    color: #64748b;
+    line-height: 1.6;
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+  .subtitle strong { color: #94a3b8; }
+  .hazards {
+    display: flex; gap: 12px;
+  }
+  .hazard {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .h1 { background: rgba(59,130,246,0.2); }
+  .h2 { background: rgba(107,114,128,0.2); }
+  .h3 { background: rgba(217,119,6,0.2); }
+  .h4 { background: rgba(239,68,68,0.2); }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 340px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .stat-icon { font-size: 28px; }
+  .stat-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: #f87171;
+    line-height: 1;
+  }
+  .stat-number.blue { color: #60a5fa; }
+  .stat-number.green { color: #34d399; }
+  .stat-label {
+    font-size: 12px;
+    color: #475569;
+    margin-top: 3px;
+  }
+
+  .arch-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 14px 20px;
+    font-size: 12px;
+    color: #64748b;
+  }
+  .arch-node {
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 8px;
+    padding: 5px 10px;
+    color: #93c5fd;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .arch-arrow { color: #334155; font-size: 14px; }
+
+  .bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .bottom-left {
+    font-size: 13px;
+    color: #334155;
+  }
+  .bottom-left strong { color: #475569; }
+  .kaggle-badge {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #64748b;
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #34d399; 
+    animation: pulse 2s infinite; }
+  @keyframes pulse {
+    0%,100% { opacity:1; } 50% { opacity:0.4; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="glow"></div>
+<div class="glow2"></div>
+
+<div class="content">
+  <div class="top-badge">
+    <div class="badge">🏆 Gemma 4 Good Hackathon 2026</div>
+    <div class="badge green">Climate & Global Resilience Track</div>
+    <div class="badge" style="color:#a78bfa;border-color:rgba(167,139,250,0.4);background:rgba(167,139,250,0.1)">Kaggle × Google DeepMind</div>
+  </div>
+
+  <div class="main">
+    <div class="left">
+      <div class="hindi-title">सहायक</div>
+      <div class="title">Sahayak</div>
+      <div class="subtitle">
+        When towers fall, communities must not.<br>
+        <strong>Offline AI disaster response</strong> for India's 640,000 villages.<br>
+        ESP32 mesh · Gemma 3 4B · React PWA · Zero internet.
+      </div>
+      <div class="hazards">
+        <div class="hazard h1">🌊</div>
+        <div class="hazard h2">🌀</div>
+        <div class="hazard h3">⛰️</div>
+        <div class="hazard h4">🌡️</div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="stat-card">
+        <div class="stat-icon">💀</div>
+        <div>
+          <div class="stat-number">420+</div>
+          <div class="stat-label">Wayanad 2024 — lives lost, 100% tower failure</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📡</div>
+        <div>
+          <div class="stat-number blue">4M+</div>
+          <div class="stat-label">Cyclone Michaung — people cut off, 17hr blackout</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚡</div>
+        <div>
+          <div class="stat-number green">₹600</div>
+          <div class="stat-label">Per node vs ₹50L traditional systems</div>
+        </div>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node">ESP32</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">ESP-NOW</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">FastAPI</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">Gemma 3 4B</div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node">PWA</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="bottom-left">
+      <strong>EN · हि · తె</strong> &nbsp;·&nbsp;
+      Citizen · Panchayat · Responder &nbsp;·&nbsp;
+      Flood · Cyclone · Landslide · Heatwave
+    </div>
+    <div class="kaggle-badge">
+      <div class="dot"></div>
+      Built for India's 640,000 villages
+    </div>
+  </div>
+</div>
+</body>
+</html>
