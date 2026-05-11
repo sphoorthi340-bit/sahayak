@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── GLOBAL RESET ─────────────────────────────────────── */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  overscroll-behavior: none;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* ─── HAZARD TRANSITION ANIMATIONS ─────────────────────── */
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-slide-in {
+  animation: fadeSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Stagger children */
+.stagger-children > * {
+  animation: fadeSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 360ms; }
+
+/* ─── OFFLINE BANNER ───────────────────────────────────── */
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+.offline-banner-enter {
+  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.offline-banner-exit {
+  animation: slideUp 0.3s ease-in both;
+}
+
+/* ─── ZONE MAP PULSE ───────────────────────────────────── */
+@keyframes zonePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.zone-alert {
+  animation: zonePulse 1.5s ease-in-out infinite;
+}
+
+/* ─── QUIZ ANIMATIONS ──────────────────────────────────── */
+@keyframes questionSlide {
+  0% {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-question-in {
+  animation: questionSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes correctFlash {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(34, 197, 94, 0.2); }
+  100% { background-color: rgba(34, 197, 94, 0.1); }
+}
+
+@keyframes wrongFlash {
+  0% { background-color: transparent; }
+  50% { background-color: rgba(239, 68, 68, 0.2); }
+  100% { background-color: rgba(239, 68, 68, 0.1); }
+}
+
+.flash-correct {
+  animation: correctFlash 0.5s ease both;
+}
+
+.flash-wrong {
+  animation: wrongFlash 0.5s ease both;
+}
+
+/* ─── SCORE ANIMATION ──────────────────────────────────── */
+@keyframes countUp {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-count-up {
+  animation: countUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: 0.2s;
+}
+
+/* ─── TOUCH-FRIENDLY CARDS ─────────────────────────────── */
+.step-card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.step-card:active {
+  transform: scale(0.98);
+}
+
+/* ─── HAZARD PILL SCROLL ───────────────────────────────── */
+.hazard-pills {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hazard-pills::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── SEVERITY PULSE ───────────────────────────────────── */
+@keyframes severityPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+  }
+}
+
+.severity-critical {
+  animation: severityPulse 2s ease-in-out infinite;
+}
+
+/* ─── DRILL BUTTON GLOW ───────────────────────────────── */
+@keyframes subtleGlow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 12px 4px rgba(99, 102, 241, 0.15);
+  }
+}
+
+.drill-button {
+  animation: subtleGlow 3s ease-in-out infinite;
+}
