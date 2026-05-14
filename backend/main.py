@@ -39,7 +39,7 @@ def get_windows_host_ip() -> str:
 WINDOWS_HOST_IP = get_windows_host_ip()
 OLLAMA_BASE_URL  = "http://127.0.0.1:11434"
 OLLAMA_MODEL     = "gemma3:4b"
-SERIAL_PORT      = os.getenv("SERIAL_PORT", "/dev/ttyUSB0")  # or COMx on Windows
+SERIAL_PORT      = os.getenv("SERIAL_PORT", "COM6")
 SERIAL_BAUD      = 115200
 DB_PATH          = "sahayak.db"
 
@@ -280,6 +280,10 @@ class ManualAlert(BaseModel):
     node_id: Optional[str] = "manual"
     battery_pct: int = 100
 
+class ChatRequest(BaseModel):
+    message: str
+    context: Optional[str] = "General"
+
 # ─── APP STARTUP ──────────────────────────────────────────────────────────────
 
 @asynccontextmanager
@@ -412,6 +416,32 @@ async def manual_alert(alert: ManualAlert):
         "message":  "Alert processed successfully",
     }
 
+@app.post("/ask")
+async def ask_gemma(request: ChatRequest):
+    """Direct chat/search endpoint for user queries"""
+    system = "You are Sahayak AI, a disaster response assistant. Provide concise, lifesaving advice based on NDMA India protocols. If the query is unrelated to disasters, politely refocus on safety."
+    combined_prompt = f"{system}\n\nUser: {request.message}"
+    
+    payload = {
+        "model": OLLAMA_MODEL,
+        "prompt": combined_prompt,
+        "stream": False,
+        "options": {
+            "num_predict": 150,
+            "temperature": 0.2,
+        }
+    }
+    
+    try:
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            resp = await client.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
+            if resp.status_code != 200:
+                return {"response": "I'm sorry, I'm currently unable to process that. Please follow local emergency broadcasts."}
+            data = resp.json()
+            return {"response": data.get("response", "").strip()}
+    except Exception:
+        return {"response": "Connection to AI engine failed. Please stay safe and follow evacuation routes if visible."}
+
 _demo_task = None
 
 async def run_demo_sequence():
@@ -450,3 +480,5 @@ async def ollama_status():
             return {"connected": True, "models": models}
     except Exception as e:
         return {"connected": False, "error": str(e)}
+from fastapi.staticfiles import StaticFiles
+app.mount("/", StaticFiles(directory="../frontend/dist", html=True), name="static")

@@ -4,7 +4,7 @@ import ZoneMap from "./src/components/ZoneMap.jsx";
 import ArchitectureDiagram from "./src/components/ArchitectureDiagram.jsx";
 
 // ─── CONFIG ──────────────────────────────────────────────
-const API_BASE = import.meta.env.VITE_API_URL || `${window.location.protocol}//${window.location.hostname}:8000`;
+const API_BASE = "";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 const HAZARD_CONFIG = {
@@ -21,6 +21,29 @@ const SEVERITY_COLOR = {
   medium:   "bg-yellow-100 text-yellow-800",
   high:     "bg-red-100 text-red-800",
   critical: "bg-red-600 text-white severity-critical",
+};
+
+const OFFLINE_PROTOCOLS = {
+  flood: {
+    en: "1. Move to higher ground immediately.\n2. Avoid walking or driving through flood waters.\n3. Disconnect electrical appliances to prevent shock.\n4. Keep your emergency kit and documents ready.\n5. Wait for official clearance before returning home.",
+    hi: "1. तुरंत ऊंचे स्थानों पर चले जाएं।\n2. बाढ़ के पानी में चलने या गाड़ी चलाने से बचें।\n3. बिजली के उपकरणों को डिस्कनेक्ट करें।\n4. अपनी आपातकालीन किट और दस्तावेज तैयार रखें।\n5. घर लौटने से पहले आधिकारिक सूचना का इंतजार करें।",
+    te: "1. వెంటనే ఎత్తైన ప్రాంతాలకు వెళ్ళండి.\n2. వరద నీటిలో నడవడం లేదా వాహనాలు నడపడం నివారించండి.\n3. విద్యుత్ పరికరాలను నిలిపివేయండి.\n4. అత్యవసర కిట్ మరియు పత్రాలను సిద్ధంగా ఉంచుకోండి.\n5. అధికారిక అనుమతి వచ్చేవరకు ఇంటికి వెళ్ళవద్దు."
+  },
+  cyclone: {
+    en: "1. Stay indoors and away from windows.\n2. Keep your mobile phone charged for emergencies.\n3. Turn off gas supply and main power switch.\n4. Secure loose items outside your house.\n5. Remain indoors until the cyclone has completely passed.",
+    hi: "1. घर के अंदर रहें और खिड़कियों से दूर रहें।\n2. आपात स्थिति के लिए अपना मोबाइल फोन चार्ज रखें।\n3. गैस की आपूर्ति और मुख्य पावर स्विच बंद करें।\n4. घर के बाहर की ढीली वस्तुओं को सुरक्षित करें।\n5. चक्रवात के पूरी तरह से गुजरने तक घर के अंदर रहें।",
+    te: "1. కిటికీలకు దూరంగా ఇంటి లోపలే ఉండండి.\n2. అత్యవసర పరిస్థితుల కోసం మొబైల్ ఫోన్‌ను ఛార్జ్ చేసి ఉంచండి.\n3. గ్యాస్ సరఫరా మరియు ప్రధాన పవర్ స్విచ్‌ను ఆఫ్ చేయండి.\n4. ఇంటి బయట ఉన్న వస్తువులను భద్రపరచండి.\n5. తుఫాను పూర్తిగా తగ్గే వరకు ఇంటి లోపలే ఉండండి."
+  },
+  landslide: {
+    en: "1. Stay alert for loud noises or ground movement.\n2. Move away from slopes and landslide-prone areas.\n3. If you cannot escape, curl into a ball and protect your head.\n4. Watch for sudden increases or decreases in water flow.\n5. Do not return to the area until officials declare it safe.",
+    hi: "1. तेज आवाजों या जमीन की हलचल के प्रति सतर्क रहें।\n2. ढलानों और भूस्खलन वाले क्षेत्रों से दूर रहें।\n3. यदि आप बच नहीं सकते हैं, तो सिर की रक्षा के लिए झुक जाएं।\n4. जल प्रवाह में अचानक वृद्धि या कमी पर नजर रखें।\n5. अधिकारियों द्वारा सुरक्षित घोषित किए जाने तक क्षेत्र में न लौटें।",
+    te: "1. పెద్ద శబ్దాలు లేదా భూమి కదలికల పట్ల అప్రమత్తంగా ఉండండి.\n2. వాలులు మరియు కొండచరియలు విరిగిపడే ప్రాంతాలకు దూరంగా ఉండండి.\n3. తప్పించుకోలేకపోతే, తలను రక్షించుకోవడానికి ముడుచుకోండి.\n4. నీటి ప్రవాహంలో మార్పులను గమనిస్తూ ఉండండి.\n5. అధికారులు సురక్షితమని ప్రకటించే వరకు ఆ ప్రాంతానికి వెళ్ళవద్దు."
+  },
+  heatwave: {
+    en: "1. Stay hydrated by drinking plenty of water and ORS.\n2. Avoid going outdoors between 12 PM and 3 PM.\n3. Wear light-colored, loose cotton clothing.\n4. Keep your home cool with curtains and cross-ventilation.\n5. Never leave children or pets in parked vehicles.",
+    hi: "1. खूब पानी और ओआरएस पीकर हाइड्रेटेड रहें।\n2. दोपहर 12 बजे से 3 बजे के बीच बाहर जाने से बचें।\n3. हल्के रंग के, ढीले सूती कपड़े पहनें।\n4. पर्दों और वेंटिलेशन के साथ अपने घर को ठंडा रखें।\n5. बच्चों या पालतू जानवरों को पार्क किए गए वाहनों में कभी न छोड़ें।",
+    te: "1. పుష్కలంగా నీరు మరియు ORS తాగుతూ ఉండండి.\n2. మధ్యాహ్నం 12 నుండి 3 గంటల మధ్య బయటకు వెళ్ళవద్దు.\n3. లేత రంగు, వదులుగా ఉండే కాటన్ దుస్తులను ధరించండి.\n4. కిటికీలు మరియు వెంటిలేషన్ ద్వారా మీ ఇంటిని చల్లగా ఉంచండి.\n5. పిల్లలను లేదా పెంపుడు జంతువులను పార్క్ చేసిన వాహనాల్లో వదిలివేయవద్దు."
+  }
 };
 
 // ─── UTILS ───────────────────────────────────────────────
@@ -122,7 +145,8 @@ function useInstructions(hazard, userType, lang, severity = "high") {
         if (cached) {
           setData(cached);
         } else {
-          setData({ response: "[Offline] Stay safe. Follow generic emergency protocols and listen to local authorities." });
+          const fallback = OFFLINE_PROTOCOLS[hazard]?.[lang] || OFFLINE_PROTOCOLS[hazard]?.en || "Stay safe. Follow official instructions.";
+          setData({ response: `[Offline Fallback] ${fallback}` });
         }
         setOffline(true);
         setLoading(false);
@@ -182,6 +206,90 @@ function OfflineBanner({ visible }) {
         <p className="font-bold text-xs">OFFLINE MODE</p>
         <p className="text-xs opacity-90">Using local fallback protocols</p>
       </div>
+    </div>
+  );
+}
+
+function ChatInterface() {
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [history, setHistory] = useState([
+    { type: 'ai', text: "Hello! I'm Sahayak AI. How can I help you stay safe today?" }
+  ]);
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+  }, [history]);
+
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (!query.trim() || loading) return;
+    const userMsg = query;
+    setQuery("");
+    setHistory(prev => [...prev, { type: 'user', text: userMsg }]);
+    setLoading(true);
+
+    try {
+      const r = await fetch(`${API_BASE}/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMsg })
+      });
+      const data = await r.json();
+      setHistory(prev => [...prev, { type: 'ai', text: data.response }]);
+    } catch (e) {
+      setHistory(prev => [...prev, { type: 'ai', text: "Connection lost. Please follow manual safety protocols." }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-2xl p-4 shadow-sm">
+      <div className="flex items-center justify-between mb-3">
+        <p className="font-bold text-gray-900 text-sm flex items-center gap-2">
+          <span className="text-lg">🤖</span> AI Emergency Assistant
+        </p>
+        <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Local Gemma 3</span>
+      </div>
+      
+      <div ref={scrollRef} className="max-h-48 overflow-y-auto mb-3 flex flex-col gap-2 p-1 custom-scrollbar">
+        {history.map((msg, i) => (
+          <div key={i} className={`p-3 rounded-2xl text-sm leading-relaxed ${
+            msg.type === 'user' 
+              ? 'bg-blue-600 text-white self-end rounded-tr-none max-w-[85%]' 
+              : 'bg-gray-100 text-gray-800 self-start rounded-tl-none max-w-[85%] border border-gray-200 shadow-sm'
+          }`}>
+            {msg.text}
+          </div>
+        ))}
+        {loading && (
+          <div className="bg-gray-50 text-gray-400 text-[10px] p-2 rounded-lg self-start animate-pulse flex items-center gap-1">
+            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce"></span>
+            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+            Gemma is thinking...
+          </div>
+        )}
+      </div>
+
+      <form onSubmit={handleSend} className="relative">
+        <input 
+          type="text" 
+          value={query} 
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Ask a question (e.g. 'How to treat a burn?')"
+          className="w-full bg-gray-50 border border-gray-200 rounded-2xl pl-4 pr-12 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all shadow-inner"
+        />
+        <button 
+          type="submit" 
+          disabled={loading || !query.trim()} 
+          className="absolute right-2 top-1.5 bg-blue-600 text-white w-9 h-9 rounded-xl flex items-center justify-center active:scale-90 disabled:opacity-30 disabled:grayscale transition-all shadow-md"
+        >
+          ➤
+        </button>
+      </form>
     </div>
   );
 }
@@ -352,6 +460,9 @@ function CitizenView({ latestAlert, isOnline, globalLang, setGlobalLang }) {
           </div>
         )}
       </div>
+
+      {/* AI Chat Interface */}
+      <ChatInterface lang={globalLang} />
 
       {/* Drill Mode Button */}
       <button

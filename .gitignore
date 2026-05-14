@@ -1,9 +1,37 @@
+# Node.js
 node_modules/
 dist/
-.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+
+# Python
 .venv/
+venv/
+ENV/
 __pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment / Secret
+.env
+.env.local
+
+# Database
 *.db
 *.db-shm
 *.db-wal
+
+# PlatformIO
 .pio/
+.pioenvs/
+.piolibdeps/
+.clang-format
+
+# OS
+.DS_Store
+Thumbs.db

@@ -133,6 +133,6 @@ When towers fall, Sahayak keeps communities connected.
 ---
 
 **GitHub:** https://github.com/sphoorthi340-bit/sahayak
-**Demo:** [ngrok tunnel URL — add before submission]
+**Demo:** https://dicing-yo-yo-angelic.ngrok-free.dev
 **Model:** Gemma 3 4B via Ollama (local inference, zero cloud dependency)
 **Hardware:** 2× ESP32-WROOM-32, Samsung Galaxy A26 (IP67), Dell Precision 7510
