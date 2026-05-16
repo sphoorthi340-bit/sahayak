@@ -17,11 +17,7 @@ export default defineConfig({
         background_color: '#f1f5f9',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
-        icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
-        ]
+        start_url: '/'
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
