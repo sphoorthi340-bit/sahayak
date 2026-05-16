@@ -55,7 +55,7 @@ Sahayak removes reliance on the internet through a multi-layered approach:
 
 ### 1. Prerequisites
 - Python 3.10+ & Node.js 18+
-- [Ollama](https://ollama.com/) with Gemma 3: `ollama pull gemma3:4b`
+- [Ollama](https://ollama.com/) with Gemma 4: `ollama pull gemma4:9b`
 
 ### 2. Run Backend
 ```bash

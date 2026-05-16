@@ -9,7 +9,7 @@ const NODES = [
   { id: "radio",  x: 155, y: 100, icon: "〰️", label: "ESP-NOW\nRadio",       tip: "Long-range mesh protocol — works without WiFi, towers, or internet. 480m range per hop." },
   { id: "base",   x: 270, y: 100, icon: "🖥️", label: "Base\nStation",       tip: "ESP32 base station receives all mesh alerts and forwards them over USB serial to the laptop." },
   { id: "usb",    x: 385, y: 100, icon: "🔌", label: "USB\nSerial",          tip: "Wired USB connection — zero network dependency. Transfers JSON alerts to FastAPI backend." },
-  { id: "laptop", x: 500, y: 100, icon: "💻", label: "Laptop +\nGemma AI",   tip: "Runs FastAPI + Gemma 3 1B locally via Ollama. Generates role-specific instructions in 3 languages." },
+  { id: "laptop", x: 500, y: 100, icon: "💻", label: "Laptop +\nGemma AI",   tip: "Runs FastAPI + Gemma 4 1B locally via Ollama. Generates role-specific instructions in 3 languages." },
   { id: "wifi",   x: 615, y: 100, icon: "📶", label: "Local\nWiFi",          tip: "Phone connects to laptop's hotspot — no internet needed. WebSocket push for instant updates." },
   { id: "phone",  x: 730, y: 100, icon: "📱", label: "Phone\n3 Views",       tip: "Samsung phone runs the React PWA. Shows Citizen, Panchayat Leader, and Responder views." },
 ];

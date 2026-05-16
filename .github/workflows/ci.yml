@@ -24,8 +24,7 @@ jobs:
     - name: Run tests
       run: |
         cd backend
-        # Skip if no tests exist yet, but we will add one
-        pytest || echo "No tests found or tests failed"
+        pytest tests/ -v
 
   frontend-build:
     runs-on: ubuntu-latest

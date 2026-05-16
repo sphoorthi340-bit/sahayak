@@ -2,16 +2,28 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import DrillMode from "./src/components/DrillMode.jsx";
 import ZoneMap from "./src/components/ZoneMap.jsx";
 import ArchitectureDiagram from "./src/components/ArchitectureDiagram.jsx";
+import SituationPanel from "./src/components/SituationPanel.jsx";
+import NodeHealthBar from "./src/components/NodeHealthBar.jsx";
 
 // ─── CONFIG ──────────────────────────────────────────────
-const API_BASE = "";
+const API_BASE = import.meta.env.VITE_API_URL || "";
 
 // ─── CONSTANTS ───────────────────────────────────────────
 const HAZARD_CONFIG = {
-  flood:     { gradient: "from-blue-600 to-blue-800",   light: "bg-blue-50",   border: "border-blue-400",   text: "text-blue-700",   accent: "#2563eb", icon: "🌊", label: "FLASH FLOOD"   },
-  cyclone:   { gradient: "from-slate-600 to-slate-800", light: "bg-slate-50",  border: "border-slate-400",  text: "text-slate-700",  accent: "#475569", icon: "🌀", label: "CYCLONE"       },
-  landslide: { gradient: "from-amber-600 to-amber-800", light: "bg-amber-50",  border: "border-amber-400",  text: "text-amber-700",  accent: "#d97706", icon: "⛰️", label: "LANDSLIDE"     },
-  heatwave:  { gradient: "from-orange-500 to-red-600",  light: "bg-orange-50", border: "border-orange-400", text: "text-orange-700", accent: "#ea580c", icon: "🌡️", label: "HEATWAVE"      },
+  // 9 one-press types
+  medical:    { gradient: "from-red-500 to-red-700",      light: "bg-red-50",     border: "border-red-400",     text: "text-red-700",     accent: "#ef4444", icon: "🚑", label: "MEDICAL"      },
+  missing:    { gradient: "from-purple-500 to-purple-700", light: "bg-purple-50",  border: "border-purple-400",  text: "text-purple-700",  accent: "#a855f7", icon: "🔍", label: "MISSING"      },
+  flood:      { gradient: "from-blue-600 to-blue-800",    light: "bg-blue-50",    border: "border-blue-400",    text: "text-blue-700",    accent: "#2563eb", icon: "🌊", label: "FLOOD"        },
+  fire:       { gradient: "from-orange-500 to-red-600",   light: "bg-orange-50",  border: "border-orange-400",  text: "text-orange-700",  accent: "#f97316", icon: "🔥", label: "FIRE"         },
+  food_water: { gradient: "from-green-500 to-green-700",  light: "bg-green-50",   border: "border-green-400",   text: "text-green-700",   accent: "#22c55e", icon: "🥤", label: "FOOD/WATER"   },
+  trapped:    { gradient: "from-yellow-600 to-orange-600",light: "bg-yellow-50",  border: "border-yellow-400",  text: "text-yellow-700",  accent: "#ca8a04", icon: "🆘", label: "TRAPPED"      },
+  safe:       { gradient: "from-teal-500 to-teal-700",    light: "bg-teal-50",    border: "border-teal-400",    text: "text-teal-700",    accent: "#14b8a6", icon: "✅", label: "SAFE HERE"    },
+  evac:       { gradient: "from-indigo-500 to-indigo-700",light: "bg-indigo-50",  border: "border-indigo-400",  text: "text-indigo-700",  accent: "#6366f1", icon: "🚶", label: "NEED EVAC"    },
+  sos:        { gradient: "from-red-600 to-rose-800",     light: "bg-rose-50",    border: "border-rose-400",    text: "text-rose-700",    accent: "#dc2626", icon: "🔴", label: "SOS"          },
+  // Legacy types
+  cyclone:    { gradient: "from-slate-600 to-slate-800",  light: "bg-slate-50",   border: "border-slate-400",   text: "text-slate-700",   accent: "#475569", icon: "🌀", label: "CYCLONE"      },
+  landslide:  { gradient: "from-amber-600 to-amber-800",  light: "bg-amber-50",   border: "border-amber-400",   text: "text-amber-700",   accent: "#d97706", icon: "⛰️", label: "LANDSLIDE"    },
+  heatwave:   { gradient: "from-orange-400 to-red-500",   light: "bg-orange-50",  border: "border-orange-300",  text: "text-orange-600",  accent: "#ea580c", icon: "🌡️", label: "HEATWAVE"     },
 };
 
 const LANG_LABELS = { en: "EN", hi: "हि", te: "తె" };
@@ -210,7 +222,13 @@ function OfflineBanner({ visible }) {
   );
 }
 
-function ChatInterface() {
+const CONFIDENCE_BADGE = {
+  high:   "🟢 HIGH",
+  medium: "🟡 MED",
+  low:    "🔴 LOW",
+};
+
+function ChatInterface({ userType = "citizen", lang = "en" }) {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([
@@ -234,7 +252,7 @@ function ChatInterface() {
       const r = await fetch(`${API_BASE}/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMsg })
+        body: JSON.stringify({ message: userMsg, user_type: userType, language: lang })
       });
       const data = await r.json();
       setHistory(prev => [...prev, { type: 'ai', text: data.response }]);
@@ -251,7 +269,7 @@ function ChatInterface() {
         <p className="font-bold text-gray-900 text-sm flex items-center gap-2">
           <span className="text-lg">🤖</span> AI Emergency Assistant
         </p>
-        <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Local Gemma 3</span>
+        <span className="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Local Gemma 4</span>
       </div>
       
       <div ref={scrollRef} className="max-h-48 overflow-y-auto mb-3 flex flex-col gap-2 p-1 custom-scrollbar">
@@ -454,7 +472,7 @@ function CitizenView({ latestAlert, isOnline, globalLang, setGlobalLang }) {
             )}
             {steps.length > 0 && (
               <p className="text-center text-[10px] text-gray-400 mt-2 font-medium">
-                {data?.generation_ms ? `Generated by Gemma 3 4B in ${(data.generation_ms / 1000).toFixed(1)}s` : 'Served from local cache'}
+                {data?.generation_ms ? `Generated by Gemma 4 4B in ${(data.generation_ms / 1000).toFixed(1)}s` : 'Served from local cache'}
               </p>
             )}
           </div>
@@ -503,6 +521,8 @@ function PanchayatView({ alerts, globalLang, setGlobalLang }) {
 
   return (
     <div className="flex flex-col gap-4">
+      <SituationPanel />
+      <NodeHealthBar />
       <ZoneMap zoneCounts={zoneCounts} />
 
       <div className="bg-white rounded-2xl p-4 shadow-sm">
@@ -544,12 +564,14 @@ function PanchayatView({ alerts, globalLang, setGlobalLang }) {
             ))}
             {steps.length > 0 && (
               <p className="text-center text-[10px] text-gray-400 mt-2 font-medium">
-                {data?.generation_ms ? `Generated by Gemma 3 4B in ${(data.generation_ms / 1000).toFixed(1)}s` : 'Served from local cache'}
+                {data?.generation_ms ? `Generated by Gemma 4 4B in ${(data.generation_ms / 1000).toFixed(1)}s` : 'Served from local cache'}
               </p>
             )}
           </div>
         )}
       </div>
+
+      <ChatInterface userType="panchayat" lang={globalLang} />
 
       <div className="bg-white rounded-2xl p-4 shadow-sm">
         <p className="font-bold text-gray-800 mb-3">Alert Log</p>
@@ -575,9 +597,14 @@ function PanchayatView({ alerts, globalLang, setGlobalLang }) {
                       )}
                     </p>
                   </div>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${SEVERITY_COLOR[a.severity] || SEVERITY_COLOR.high}`}>
-                    {a.severity}
-                  </span>
+                  <div className="flex flex-col items-end gap-1">
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${SEVERITY_COLOR[a.severity] || SEVERITY_COLOR.high}`}>
+                      {a.severity}
+                    </span>
+                    {a.confidence && (
+                      <span className="text-[9px] text-gray-400 font-medium">{CONFIDENCE_BADGE[a.confidence] || ""}</span>
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -660,12 +687,14 @@ function ResponderView({ alerts, globalLang, setGlobalLang }) {
             ))}
             {steps.length > 0 && (
               <p className="text-center text-[10px] text-gray-400 mt-2 font-medium">
-                {data?.generation_ms ? `Generated by Gemma 3 4B in ${(data.generation_ms / 1000).toFixed(1)}s` : 'Served from local cache'}
+                {data?.generation_ms ? `Generated by Gemma 4 4B in ${(data.generation_ms / 1000).toFixed(1)}s` : 'Served from local cache'}
               </p>
             )}
           </div>
         )}
       </div>
+
+      <ChatInterface userType="responder" lang={globalLang} />
 
       <div className="bg-white rounded-2xl p-4 shadow-sm">
         <p className="font-bold text-gray-800 mb-3">Incident Feed</p>
@@ -705,7 +734,7 @@ function ResponderView({ alerts, globalLang, setGlobalLang }) {
 
 // ─── INFO VIEW ────────────────────────────────────────────
 const TECH_STACK = [
-  { label: "Gemma 3 12B",  color: "from-blue-500 to-blue-700" },
+  { label: "Gemma 4 12B",  color: "from-blue-500 to-blue-700" },
   { label: "FastAPI",      color: "from-emerald-500 to-emerald-700" },
   { label: "ESP-NOW",      color: "from-amber-500 to-amber-700" },
   { label: "React PWA",    color: "from-cyan-500 to-cyan-700" },
