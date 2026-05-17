@@ -16,6 +16,7 @@
 ## 📖 Table of Contents
 - [Project Overview](docs/PROJECT_OVERVIEW.md)
 - [System Architecture](docs/ARCHITECTURE.md)
+- [Demo Setup Guide](docs/DEMO_SETUP.md)
 - [Problem & Impact](#-the-problem--impact)
 - [The Sahayak Solution](#-the-sahayak-solution)
 - [Tech Stack](#-tech-stack)
@@ -83,7 +84,7 @@ Flash the physical ESP32 nodes using PlatformIO:
 1.  **Base Station**: `pio run -e base_station -t upload`
 2.  **Field Node**: `pio run -e field_node -t upload`
 
-Refer to [DEMO_SETUP.md](DEMO_SETUP.md) for full wiring diagrams.
+Refer to [Demo Setup Guide](docs/DEMO_SETUP.md) for full wiring diagrams.
 
 ---
 
