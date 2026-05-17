@@ -34,7 +34,7 @@ Sahayak addresses the **640,000+ villages in India** that lack redundant cellula
 Sahayak removes reliance on the internet through a multi-layered approach:
 
 1.  **ESP-NOW Mesh Network**: Self-healing grid of ESP32 nodes ($7/node) that broadcast alerts across Wi-Fi frequencies without routers.
-2.  **Edge Intelligence (Gemma 3)**: A central command station runs Google's Gemma 3 model locally via Ollama, providing protocol-grounded emergency advice.
+2.  **Edge Intelligence (Gemma 4 E4B)**: A central command station runs Google's Gemma 4 E4B model locally via Ollama, providing protocol-grounded emergency advice in regional languages.
 3.  **Multilingual PWA**: A Progressive Web App dashboard offering telemetry and safety guides in English, Hindi, and Telugu.
 4.  **Hardware Fallback**: Physical nodes feature OLEDs and Matrix Keypads for direct user interaction if smartphones are lost.
 
@@ -43,7 +43,7 @@ Sahayak removes reliance on the internet through a multi-layered approach:
 ## 🛠️ Tech Stack
 | Component | Technology |
 |---|---|
-| **AI Engine** | Google Gemma 3 (1B/4B) via Ollama |
+| **AI Engine** | Google Gemma 4 E4B via Ollama (local, offline) |
 | **Backend** | FastAPI (Python), SQLite |
 | **Frontend** | React, Vite, TailwindCSS |
 | **Hardware** | ESP32-WROOM-32, ESP-NOW, C++ |
@@ -55,7 +55,7 @@ Sahayak removes reliance on the internet through a multi-layered approach:
 
 ### 1. Prerequisites
 - Python 3.10+ & Node.js 18+
-- [Ollama](https://ollama.com/) with Gemma 4: `ollama pull gemma4:9b`
+- [Ollama](https://ollama.com/) with Gemma 4 E4B: `ollama pull gemma4:e4b`
 
 ### 2. Run Backend
 ```bash

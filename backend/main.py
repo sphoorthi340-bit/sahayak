@@ -23,7 +23,7 @@ from pydantic import BaseModel
 # ─── CONFIG ──────────────────────────────────────────────────────────────────
 
 OLLAMA_BASE_URL = "http://127.0.0.1:11434"
-OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "gemma4:4b")
+OLLAMA_MODEL    = os.getenv("OLLAMA_MODEL", "gemma4:e4b")
 SERIAL_PORT     = os.getenv("SERIAL_PORT", "COM6")
 SERIAL_BAUD     = 115200
 DB_PATH         = "sahayak.db"
@@ -258,21 +258,23 @@ Use triage terminology. Be precise. Prioritize life safety. Include resources ne
 
 async def call_ollama(hazard: str, user_type: str, language: str, severity: str, region: str = "India"):
     prompt_dict = build_prompt(hazard, user_type, language, severity, region)
-    combined = f"{prompt_dict['system']}\n\n{prompt_dict['user']}"
     payload = {
         "model": OLLAMA_MODEL,
-        "prompt": combined,
+        "messages": [
+            {"role": "system", "content": prompt_dict["system"]},
+            {"role": "user", "content": prompt_dict["user"]}
+        ],
         "stream": False,
-        "options": {"num_predict": 150, "temperature": 0.1, "num_thread": 4}
+        "options": {"num_predict": 800, "temperature": 0.1, "num_thread": 4}
     }
     try:
         start = time.perf_counter()
         async with httpx.AsyncClient(timeout=90.0) as client:
-            resp = await client.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
+            resp = await client.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload)
             ms = (time.perf_counter() - start) * 1000
             if resp.status_code != 200:
                 return f"[Error] Ollama returned {resp.status_code}", 0.0
-            return resp.json().get("response", "").strip(), ms
+            return resp.json().get("message", {}).get("content", "").strip(), ms
     except httpx.ConnectError:
         fallback = HAZARD_CONTEXT.get(hazard, "Emergency alert.")
         return f"[Offline] {fallback} Stay safe. Follow local authority instructions.", 0.0
@@ -488,20 +490,25 @@ async def ask_gemma(request: ChatRequest):
     }.get(request.language or "en", "Respond in clear simple English.")
 
     system = f"{role_context} {lang_instruction} Ground all advice in NDMA India protocols. If unrelated to disasters, politely refocus on safety."
-    combined = f"{system}\n\nUser: {request.message}\nAssistant:"
     payload = {
         "model": OLLAMA_MODEL,
-        "prompt": combined,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": request.message}
+        ],
         "stream": False,
-        "options": {"num_predict": 200, "temperature": 0.2}
+        "options": {"num_predict": 800, "temperature": 0.1, "num_thread": 4}
     }
     try:
-        async with httpx.AsyncClient(timeout=90.0) as client:
-            resp = await client.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
+        async with httpx.AsyncClient(timeout=120.0) as client:
+            resp = await client.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload)
             if resp.status_code == 200:
-                return {"response": resp.json().get("response", "").strip()}
+                return {"response": resp.json().get("message", {}).get("content", "").strip()}
             return {"response": "I'm unable to process that right now. Follow local emergency broadcasts."}
-    except Exception:
+    except Exception as e:
+        import traceback
+        print("Exception in ask_gemma:")
+        traceback.print_exc()
         return {"response": "Connection to AI engine failed. Stay safe and follow evacuation routes."}
 
 @app.get("/situation")
@@ -543,18 +550,20 @@ Provide:
 4. What will likely escalate in next 30 minutes
 Be concise. Plain English. This is life-safety."""
 
-    combined = f"{system}\n\nALERT DATA:\n{chr(10).join(lines)}\n\nSituational analysis:"
     payload = {
         "model": OLLAMA_MODEL,
-        "prompt": combined,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": f"ALERT DATA:\n{chr(10).join(lines)}\n\nSituational analysis:"}
+        ],
         "stream": False,
-        "options": {"num_predict": 250, "temperature": 0.15, "num_thread": 4}
+        "options": {"num_predict": 800, "temperature": 0.15, "num_thread": 4}
     }
     try:
         async with httpx.AsyncClient(timeout=90.0) as client:
-            resp = await client.post(f"{OLLAMA_BASE_URL}/api/generate", json=payload)
+            resp = await client.post(f"{OLLAMA_BASE_URL}/api/chat", json=payload)
             if resp.status_code == 200:
-                analysis = resp.json().get("response", "").strip()
+                analysis = resp.json().get("message", {}).get("content", "").strip()
             else:
                 analysis = f"[Model unavailable] {', '.join(f'{k}:{v}' for k,v in type_counts.items())}"
     except Exception:

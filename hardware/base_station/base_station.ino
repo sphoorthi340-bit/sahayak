@@ -4,6 +4,7 @@
 
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include <ArduinoJson.h>
 #include <U8g2lib.h>
 #include <Wire.h>
@@ -20,7 +21,7 @@ bool          laptopConnected = false;
 unsigned long lastAlertTime = 0;
 bool          spiffsQueueFlushed = false;
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, u8x8_pin_none);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
 
 // Open mode — accept all nodes
 const int numAuthorized = 0;
@@ -161,6 +162,8 @@ void setup() {
   Wire.begin(21, 22);
   u8g2.begin();
   WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
   // Note: WiFi.begin() only called when OTA is needed, not at boot.
 
   if (!SPIFFS.begin(true)) Serial.println("SPIFFS mount failed");

@@ -25,7 +25,7 @@ The core insight is architectural: separate the communication layer from the int
 
 **The communication layer** uses two ESP32-WROOM-32 microcontrollers communicating via ESP-NOW — a connectionless WiFi protocol that requires no router, no internet, and no infrastructure. A field node deployed in a village sends structured JSON alert packets (hazard type, severity, location, battery percentage) to a base station node up to 500 metres away. The base station forwards packets via USB serial to the laptop running the AI brain. In production deployment, this backbone upgrades to LoRa SX1278 modules for 10-15km range per node — a full district covered by 20-30 nodes at approximately ₹600 each.
 
-**The intelligence layer** runs Gemma 4 4B locally via Ollama. No API calls. No cloud dependency. The model generates contextually appropriate emergency instructions grounded in NDMA (National Disaster Management Authority) India official guidelines and NDRF protocols. Every prompt explicitly references the region and official framework, giving judges and users confidence that the output is not arbitrary AI generation but structured guidance aligned with government protocols.
+**The intelligence layer** runs Gemma 4 E4B locally via Ollama. No API calls. No cloud dependency. The model generates contextually appropriate emergency instructions grounded in NDMA (National Disaster Management Authority) India official guidelines and NDRF protocols. Every prompt explicitly references the region and official framework, giving judges and users confidence that the output is not arbitrary AI generation but structured guidance aligned with government protocols.
 
 ---
 
@@ -75,7 +75,7 @@ Response caching in SQLite ensures that once a hazard-language-region combinatio
         |
     Ollama local inference
         |
-[Gemma 4 4B — fully offline]
+[Gemma 4 E4B — fully offline]
  • NDMA-grounded prompts
  • 3 user personas
  • 3 languages
@@ -134,5 +134,5 @@ When towers fall, Sahayak keeps communities connected.
 
 **GitHub:** https://github.com/sphoorthi340-bit/sahayak
 **Demo:** https://dicing-yo-yo-angelic.ngrok-free.dev
-**Model:** Gemma 4 4B via Ollama (local inference, zero cloud dependency)
+**Model:** Gemma 4 E4B via Ollama (local inference, zero cloud dependency — optimized for offline disaster response)
 **Hardware:** 2× ESP32-WROOM-32, Samsung Galaxy A26 (IP67), Dell Precision 7510

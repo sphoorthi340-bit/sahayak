@@ -15,6 +15,7 @@
 
 #include <esp_now.h>
 #include <WiFi.h>
+#include <esp_wifi.h>
 #include <ArduinoJson.h>
 #include <U8g2lib.h>
 #include <Wire.h>
@@ -252,7 +253,7 @@ void sendAlert(int idx) {
   pendingAlertIdx = -1;
 }
 
-void onDataSent(const uint8_t *mac, esp_now_send_status_t status) {
+void onDataSent(const wifi_tx_info_t *info, esp_now_send_status_t status) {
   if (status == ESP_NOW_SEND_SUCCESS) {
     digitalWrite(PIN_STATUS_LED, HIGH); delay(30); digitalWrite(PIN_STATUS_LED, LOW);
   }
@@ -275,6 +276,8 @@ void setup() {
   Wire.begin(21, 22);
   u8g2.begin();
   WiFi.mode(WIFI_STA);
+  WiFi.disconnect();
+  esp_wifi_set_channel(1, WIFI_SECOND_CHAN_NONE);
   Serial.print("Field Node MAC: "); Serial.println(WiFi.macAddress());
 
   if (esp_now_init() != ESP_OK) { Serial.println("ESP-NOW init failed"); return; }

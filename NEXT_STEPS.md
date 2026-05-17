@@ -11,7 +11,7 @@
 - `/nodes/status` + `/nodes/heartbeat` — active/lost node health tracking
 - `/ask` — role-aware AI chat (citizen / panchayat / responder + language)
 - Confidence scoring on every alert (RSSI + repeat count → high/medium/low)
-- CORS from `CORS_ORIGINS` env var; `OLLAMA_MODEL` env var (default: `gemma4:4b`)
+- CORS from `CORS_ORIGINS` env var; `OLLAMA_MODEL` env var (default: `gemma4:e4b`)
 - Thread-safe SSE client set (bug fix from audit)
 
 ### Frontend (App.jsx v2)
@@ -72,13 +72,13 @@ pio run -e base_station -t upload
 ### 1. Update `.env`
 ```
 SERIAL_PORT=COM6
-OLLAMA_MODEL=gemma4:4b
+OLLAMA_MODEL=gemma4:e4b
 CORS_ORIGINS=http://localhost:5173,http://192.168.137.1:5173
 ```
 
 ### 2. Pull Gemma model (if needed)
 ```bash
-ollama pull gemma4:4b
+ollama pull gemma4:e4b
 ```
 
 ### 3. Start backend

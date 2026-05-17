@@ -2,10 +2,10 @@
 
 This guide explains how to spin up the Sahayak system for a live demonstration, including setting up `ngrok` tunnels to allow judges to access your locally-hosted application over the internet.
 
-## 1. Start the Gemma 4 Model
-Ensure Ollama is running and the Gemma 4 model is available.
+## 1. Start the Gemma 4 E4B Model
+Ensure Ollama is running and the Gemma 4 E4B model is available.
 ```powershell
-ollama run gemma4:9b
+ollama run gemma4:e4b
 ```
 *(You can exit the prompt once it loads, Ollama runs as a background service).*
 
