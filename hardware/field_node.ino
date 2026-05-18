@@ -23,7 +23,7 @@
 #include <ArduinoOTA.h>
 
 // ─── CONFIGURATION ──────────────────────────────────────
-uint8_t BASE_MAC[]       = {0x1C, 0xC3, 0xAB, 0xB4, 0x45, 0xA8};
+uint8_t BASE_MAC[]       = {0x28, 0x05, 0xA5, 0x35, 0x2E, 0xD4};
 const uint8_t XOR_KEY[]  = "SAHAYAK2026";
 const size_t  XOR_KEY_LEN = 11;
 const char*   MASTER_PIN  = "1234";
