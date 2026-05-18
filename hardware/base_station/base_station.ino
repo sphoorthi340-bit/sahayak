@@ -139,9 +139,20 @@ void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
 
   char forwardStr[512]; serializeJson(fwd, forwardStr);
 
+  // Human-readable print for Serial Monitor
+  Serial.println("\n>>> [ALERT INGRESS] ESP-NOW PACKET RECEIVED <<<");
+  Serial.printf("Node ID:   %s\n", (const char*)doc["node_id"]);
+  Serial.printf("Hazard:    %s\n", hazard);
+  Serial.printf("Severity:  %s\n", (const char*)doc["severity"]);
+  Serial.printf("Battery:   %d%%\n", doc["battery_pct"] | 100);
+  Serial.printf("Signal:    %d dBm (RSSI)\n", info->rx_ctrl->rssi);
+  Serial.println(encrypted ? "Security:  [AES-128 XOR ENCRYPTED]" : "Security:  [UNENCRYPTED]");
+  Serial.println("-----------------------------------------");
+
   if (isLaptopOnline()) {
     Serial.println(forwardStr);
   } else {
+    Serial.println("[QUEUE] Laptop offline! Saving alert to SPIFFS flash...");
     File f = SPIFFS.open("/queue.txt", FILE_APPEND);
     if (f) { f.println(forwardStr); f.close(); }
   }
@@ -196,6 +207,14 @@ void setup() {
 
   drawIdle();
   Serial.println("{\"type\":\"info\",\"msg\":\"Base station ready v2\"}");
+
+  Serial.println("\n=========================================");
+  Serial.println("         SAHAYAK BASE STATION ONLINE     ");
+  Serial.println("=========================================");
+  uint8_t mac[6]; WiFi.macAddress(mac);
+  Serial.printf("MAC Address: %02X:%02X:%02X:%02X:%02X:%02X\n", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+  Serial.println("Listening for ESP-NOW alerts...");
+  Serial.println("-----------------------------------------");
 }
 
 // ─── LOOP ───────────────────────────────────────────────
@@ -209,6 +228,9 @@ void loop() {
       bool wasOffline = !laptopConnected;
       lastPingTime = millis();
       laptopConnected = true;
+      if (wasOffline) {
+        Serial.println("\n[SYSTEM] Laptop server connected! Live telemetry link active.");
+      }
       // If laptop just came online, flush queued alerts
       if (wasOffline && !spiffsQueueFlushed) {
         delay(200); // small settle
@@ -223,6 +245,7 @@ void loop() {
   if (!isLaptopOnline() && spiffsQueueFlushed) {
     spiffsQueueFlushed = false;
     laptopConnected = false;
+    Serial.println("\n[SYSTEM] Laptop server disconnected! Offline queueing enabled.");
   }
 
   // Return OLED to idle after 10s
