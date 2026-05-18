@@ -125,11 +125,13 @@ void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
     delay(3000); drawIdle(); return;
   }
 
+  const char* hazard = doc["hazard"] | doc["alert_type"] | "?";
+
   // Normal alert — forward JSON
   StaticJsonDocument<512> fwd;
   fwd["node_id"]     = doc["node_id"];
-  fwd["hazard"]      = doc["hazard"] | doc["alert_type"];
-  fwd["alert_type"]  = doc["alert_type"] | doc["hazard"];
+  fwd["hazard"]      = hazard;
+  fwd["alert_type"]  = hazard;
   fwd["severity"]    = doc["severity"];
   fwd["timestamp"]   = doc["timestamp"];
   fwd["location"]    = doc["location"] | "unknown";
@@ -161,7 +163,6 @@ void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   u8g2.clearBuffer();
   u8g2.setFont(u8g2_font_6x10_tf);
   u8g2.drawStr(0, 10, encrypted ? "SECURE ALERT" : "ALERT RECEIVED");
-  const char* hazard = doc["hazard"] | doc["alert_type"] | "?";
   u8g2.drawStr(0, 28, hazard);
   u8g2.drawStr(0, 42, doc["node_id"] | "unknown");
   char rssiStr[16]; snprintf(rssiStr, sizeof(rssiStr), "RSSI: %d", info->rx_ctrl->rssi);
