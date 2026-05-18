@@ -80,7 +80,19 @@ Navigate to `http://localhost:5173`.
 ---
 
 ## 📡 Hardware Setup
-Flash the physical ESP32 nodes using PlatformIO:
+Flash the physical ESP32 nodes using **Arduino IDE** (recommended) or **PlatformIO**:
+
+### Option A: Arduino IDE (Recommended)
+1. Open the Arduino IDE.
+2. Install the **ESP32** board package (`esp32` by Espressif) via the Boards Manager.
+3. Install required libraries via Library Manager: **ArduinoJson**, **U8g2**, and **Keypad**.
+4. Open the firmware sketch files:
+   - **Base Station**: `hardware/base_station/base_station.ino`
+   - **Field Node**: `hardware/field_node.ino`
+5. Select **ESP32 Dev Module** as the board and the correct COM port.
+6. Click **Upload** to compile and flash.
+
+### Option B: PlatformIO CLI
 1.  **Base Station**: `pio run -e base_station -t upload`
 2.  **Field Node**: `pio run -e field_node -t upload`
 
