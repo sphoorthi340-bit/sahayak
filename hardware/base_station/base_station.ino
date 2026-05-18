@@ -15,6 +15,9 @@
 const uint8_t XOR_KEY[]  = "SAHAYAK2026";
 const size_t  XOR_KEY_LEN = 11;
 
+// ─── HARDWARE ───────────────────────────────────────────
+#define PIN_STATUS_LED 2 // Onboard LED
+
 // ─── STATE ──────────────────────────────────────────────
 unsigned long lastPingTime  = 0;
 bool          laptopConnected = false;
@@ -41,6 +44,7 @@ void flushSpiffsQueue() {
   File f = SPIFFS.open("/queue.txt", FILE_READ);
   if (!f) return;
   int flushed = 0;
+  digitalWrite(PIN_STATUS_LED, HIGH); // Light up during flush
   while (f.available()) {
     String line = f.readStringUntil('\n');
     line.trim();
@@ -50,6 +54,7 @@ void flushSpiffsQueue() {
     }
   }
   f.close();
+  digitalWrite(PIN_STATUS_LED, LOW);
   if (flushed > 0) {
     SPIFFS.remove("/queue.txt");
     Serial.print("{\"type\":\"info\",\"msg\":\"Flushed ");
@@ -79,6 +84,8 @@ void drawIdle() {
 void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   if (!isAuthorized(info->src_addr)) return;
 
+  digitalWrite(PIN_STATUS_LED, HIGH); // Indicate packet receipt
+
   uint8_t buffer[512];
   int safeLen = min(len, 511);
   memcpy(buffer, data, safeLen);
@@ -104,6 +111,7 @@ void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
     // Forward heartbeat to laptop for node tracking
     char fwd[256]; serializeJson(doc, fwd);
     if (isLaptopOnline()) Serial.println(fwd);
+    digitalWrite(PIN_STATUS_LED, LOW);
     return;
   }
 
@@ -113,6 +121,7 @@ void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
     u8g2.drawStr(10, 35, "!! TAMPER !!"); u8g2.sendBuffer();
     char fwd[256]; serializeJson(doc, fwd);
     if (isLaptopOnline()) { Serial.println(fwd); }
+    digitalWrite(PIN_STATUS_LED, LOW);
     delay(3000); drawIdle(); return;
   }
 
@@ -154,11 +163,21 @@ void onDataRecv(const esp_now_recv_info_t *info, const uint8_t *data, int len) {
   StaticJsonDocument<64> ack; ack["type"] = "ack";
   char ackBuf[64]; serializeJson(ack, ackBuf);
   esp_now_send(info->src_addr, (uint8_t*)ackBuf, strlen(ackBuf));
+
+  digitalWrite(PIN_STATUS_LED, LOW);
 }
 
 // ─── SETUP ──────────────────────────────────────────────
 void setup() {
   Serial.begin(115200);
+  pinMode(PIN_STATUS_LED, OUTPUT);
+  digitalWrite(PIN_STATUS_LED, LOW);
+  // Blink 3 times on boot
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(PIN_STATUS_LED, HIGH); delay(100);
+    digitalWrite(PIN_STATUS_LED, LOW); delay(100);
+  }
+
   Wire.begin(21, 22);
   u8g2.begin();
   WiFi.mode(WIFI_STA);
