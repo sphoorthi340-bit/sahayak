@@ -2,6 +2,7 @@
 ### Offline-First AI Disaster Response System
 
 [![Gemma 4 Good](https://img.shields.io/badge/Hackathon-Gemma%204%20Good-blue)](https://www.kaggle.com/c/gemma-4-good)
+[![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-red)](https://youtu.be/fTYM_cO4mZo?si=PV0i1dq9V3y_T1RN)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI-green)](https://fastapi.tiangolo.com/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20PWA-orange)](https://react.dev/)
 [![Hardware](https://img.shields.io/badge/Hardware-ESP32%20Mesh-red)](https://www.espressif.com/en/products/socs/esp32)
@@ -10,6 +11,8 @@
 > **"When the towers fall, Sahayak keeps you connected."**
 > 
 > Sahayak is a localized, AI-powered communication ecosystem designed to keep communities connected when cellular infrastructure is destroyed by natural disasters.
+> 
+> 📺 **Watch the Demo Video:** [YouTube Video Link](https://youtu.be/fTYM_cO4mZo?si=PV0i1dq9V3y_T1RN)
 
 ---
 
