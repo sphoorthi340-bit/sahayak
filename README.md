@@ -1,16 +1,19 @@
-# Sahayak (सहायक) — Resilience in Silence
-### Offline-First AI Disaster Response System
+# Sahayak (सहायक): AIoT Disaster Response & Systems Architecture
+### Offline-First Intelligent Mesh Communication System
 
 [![Gemma 4 Good](https://img.shields.io/badge/Hackathon-Gemma%204%20Good-blue)](https://www.kaggle.com/c/gemma-4-good)
 [![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-red)](https://youtu.be/fTYM_cO4mZo?si=PV0i1dq9V3y_T1RN)
+[![AIoT](https://img.shields.io/badge/Domain-AIoT%20%7C%20Systems%20Architecture-black)](#)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI-green)](https://fastapi.tiangolo.com/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20PWA-orange)](https://react.dev/)
 [![Hardware](https://img.shields.io/badge/Hardware-ESP32%20Mesh-red)](https://www.espressif.com/en/products/socs/esp32)
 [![License](https://img.shields.io/badge/License-MIT-purple)](LICENSE)
 
-> **"When the towers fall, Sahayak keeps you connected."**
+**Tags:** `esp-now` `aiot` `gemma-ai` `esp32` `disaster-response` `offline-first` `systems-architecture`
+
+> **A Flagship Integration of Software AI and Hardware Embedded Systems**
 > 
-> Sahayak is a localized, AI-powered communication ecosystem designed to keep communities connected when cellular infrastructure is destroyed by natural disasters.
+> Sahayak is an advanced, localized AI-powered communication ecosystem designed to keep communities connected when cellular infrastructure is destroyed. Designed from the ground up with a focus on robust systems architecture, this project bridges edge AI (Gemma 4) with distributed embedded microcontrollers (ESP32) for critical disaster response.
 > 
 > 📺 **Watch the Demo Video:** [YouTube Video Link](https://youtu.be/fTYM_cO4mZo?si=PV0i1dq9V3y_T1RN)
 
@@ -34,13 +37,22 @@ During disasters like the **2024 Wayanad Landslides**, cellular towers failed wi
 
 Sahayak addresses the **640,000+ villages in India** that lack redundant cellular infrastructure, providing a lifeline when every second counts.
 
+## 🏗️ Systems Architecture & Engineering Focus
+Sahayak is built to demonstrate professional-grade systems integration, specifically tailored for an AIoT environment. The architecture strictly separates concerns across the embedded, networking, backend, and frontend layers while optimizing for extreme resource constraints and zero-connectivity environments.
+
+- **Embedded Systems & Mesh Networking**: Implementation of a self-healing ESP-NOW mesh network using ESP32 RTOS capabilities.
+- **Edge AI Integration**: Real-time interoperability between constrained hardware nodes and a localized Google Gemma 4 E4B Large Language Model.
+- **Asynchronous Telemetry System**: Fault-tolerant data streaming from serial interfaces through a Python/FastAPI backend to a React-based Progressive Web App.
+
+---
+
 ## 💡 The Sahayak Solution
 Sahayak removes reliance on the internet through a multi-layered approach:
 
-1.  **ESP-NOW Mesh Network**: Self-healing grid of ESP32 nodes ($7/node) that broadcast alerts across Wi-Fi frequencies without routers.
+1.  **ESP-NOW Mesh Network**: Self-healing grid of ESP32 nodes ($7/node) that broadcast alerts across Wi-Fi MAC layer frequencies without routers.
 2.  **Edge Intelligence (Gemma 4 E4B)**: A central command station runs Google's Gemma 4 E4B model locally via Ollama, providing protocol-grounded emergency advice in regional languages.
 3.  **Multilingual PWA**: A Progressive Web App dashboard offering telemetry and safety guides in English, Hindi, and Telugu.
-4.  **Hardware Fallback**: Physical nodes feature OLEDs and Matrix Keypads for direct user interaction if smartphones are lost.
+4.  **Hardware Fallback**: Physical nodes feature OLEDs and Matrix Keypads for direct user interaction, providing redundancy if smartphones are lost.
 
 ---
 
