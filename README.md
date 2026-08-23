@@ -2,7 +2,6 @@
 ### Offline-First Intelligent Mesh Communication System
 
 [![Gemma 4 Good](https://img.shields.io/badge/Hackathon-Gemma%204%20Good-blue)](https://www.kaggle.com/c/gemma-4-good)
-[![Demo Video](https://img.shields.io/badge/Demo%20Video-YouTube-red)](https://youtu.be/fTYM_cO4mZo?si=PV0i1dq9V3y_T1RN)
 [![AIoT](https://img.shields.io/badge/Domain-AIoT%20%7C%20Systems%20Architecture-black)](#)
 [![Backend](https://img.shields.io/badge/Backend-FastAPI-green)](https://fastapi.tiangolo.com/)
 [![Frontend](https://img.shields.io/badge/Frontend-React%20PWA-orange)](https://react.dev/)
@@ -15,7 +14,7 @@
 > 
 > Sahayak is an advanced, localized AI-powered communication ecosystem designed to keep communities connected when cellular infrastructure is destroyed. Designed from the ground up with a focus on robust systems architecture, this project bridges edge AI (Gemma 4) with distributed embedded microcontrollers (ESP32) for critical disaster response.
 > 
-> 📺 **Watch the Demo Video:** [YouTube Video Link](https://youtu.be/fTYM_cO4mZo?si=PV0i1dq9V3y_T1RN)
+
 
 ---
 
